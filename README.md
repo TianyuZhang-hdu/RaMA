@@ -11,7 +11,6 @@ SAM-Med2D) to produce consensus-refined pseudo-labels. An LLM-derived
 reliability score dynamically weights the self-training loss, suppressing
 noisy corrections from propagating.
 
-![RaMA framework](./RaMA.png)
 
 ## Requirements
 
@@ -135,7 +134,7 @@ done
 
 ## Results
 
-| Target | Source Only | LLM + Multi-SAM Direct | Round 3 (Ours) | Paper |
+| Target | Source Only | LLM + Multi-SAM Direct | RaMA | Paper |
 |---|---:|---:|---:|---:|
 | Vendor B | 79.30 | 77.63 | **85.58** | 85.68 |
 | Vendor C | 68.58 | 67.79 | **82.85** | 82.13 |
