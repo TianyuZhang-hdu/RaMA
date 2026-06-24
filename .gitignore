@@ -1,0 +1,42 @@
+# Python / venv
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# IDE / system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated locally by reproduction scripts
+repro_outputs/
+repro_training/
+runs/
+logs/
+
+# External model code & weights (large, license-restricted)
+external/
+weights/
+*.pt
+*.pth
+*.safetensors
+
+# Private caches (never release)
+private_cache/
+llm_scores/
+sam_results/
+json_results/
+debug_output_llm/
+debug_output_sam/
+
+# Local user config (may contain API keys)
+configs/rama_config.yaml
+configs/paths.yaml
+
+# Figure / paper drafts kept outside the open release
+figure_candidates*/
+figure_previews/

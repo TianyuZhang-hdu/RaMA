@@ -1,0 +1,116 @@
+# ============================================================================
+# RaMA reproduction configuration (example)
+#
+# Copy this file to `rama_config.yaml` and fill in your local paths, model
+# checkpoints, and API credentials. NEVER commit a filled-in copy that contains
+# real API keys.
+#
+#   cp configs/rama_config.example.yaml configs/rama_config.yaml
+#
+# All values can also be overridden by environment variables (see the names in
+# brackets). Environment variables take precedence over this file.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Workspace root
+#
+# The legacy Qwen/SAM reference scripts originally used absolute paths under a
+# single workspace directory (historically `/root/autodl-tmp`). Set this to the
+# root that contains your `datas/`, `asga/`, `MedSAM2/`, etc. The reference
+# scripts join their sub-paths onto this root.
+# [RAMA_WORKSPACE_ROOT]
+# ----------------------------------------------------------------------------
+workspace_root: /path/to/workspace
+
+# ----------------------------------------------------------------------------
+# Data paths
+# ----------------------------------------------------------------------------
+data:
+  # Processed M&Ms 2D PNG root (produced by scripts/prepare_mnms_png.py).
+  # [RAMA_DATASET_ROOT]
+  dataset_root: /path/to/processed/mnms_png
+
+  # Raw M&Ms NIfTI root (only needed to regenerate the PNG layout).
+  # [RAMA_RAW_ROOT]
+  raw_root: /path/to/MnM
+
+# ----------------------------------------------------------------------------
+# Source model / training outputs
+# ----------------------------------------------------------------------------
+training:
+  # Trained Vendor A source checkpoint consumed by Round 0.
+  # [RAMA_SOURCE_MODEL]
+  source_model: repro_training/source_vendorA_sfda400/models/vendorA/last-Res_Unet.pth
+
+  # Root for Round 0 fine-tuning logs/checkpoints.
+  # [RAMA_LOG_ROOT]
+  log_root: repro_training/round0_logs
+
+  # Root for Round 1-3 self-training outputs.
+  # [RAMA_SELF_TRAIN_ROOT]
+  self_train_root: repro_training/self_train_sfda400
+
+# ----------------------------------------------------------------------------
+# Private pseudo-label / score caches (NOT part of the open-source release)
+# ----------------------------------------------------------------------------
+private_cache:
+  # ASGA Round 0 pseudo-labels: <result_root>/{vendor}/{image,mask}
+  # [RAMA_RESULT_ROOT]
+  result_root: /path/to/private/asga/result
+
+  # Qwen per-organ quality scores used for score-weighted Dice in Round 0:
+  #   <llm_score_root>/{model}/{vendor}_train/*.json
+  # Leave empty to disable score weighting (unweighted Dice fallback).
+  # [RAMA_LLM_SCORE_ROOT]
+  llm_score_root: ""
+
+  # Intermediate SAM-agent masks and debug outputs.
+  # [RAMA_SAM_RESULT_ROOT]
+  sam_result_root: /path/to/private/asga/tests
+
+# ----------------------------------------------------------------------------
+# Source-model inference outputs (initial pseudo-labels before refinement)
+# ----------------------------------------------------------------------------
+inference:
+  # Original IPLC code root used by iplc/generate.py (defaults to this package).
+  # [RAMA_MODEL_ROOT]
+  model_root: ""
+  # Where source-model inference masks are written.
+  # [RAMA_INFER_OUT]
+  infer_out: /path/to/private/asga/heart/iplc/infer_mask
+
+# ----------------------------------------------------------------------------
+# Foundation-model (SAM agent) checkpoints
+# ----------------------------------------------------------------------------
+sam_agents:
+  # SAM3 checkpoint (optional; only needed to run SAM3 refinement live).
+  # [RAMA_SAM3_CKPT]
+  sam3_ckpt: ""
+
+  # MedSAM2 repository path and checkpoint.
+  # [RAMA_MEDSAM2_PATH] / [RAMA_MEDSAM2_CKPT]
+  medsam2_path: /path/to/MedSAM2
+  medsam2_ckpt: /path/to/MedSAM2/checkpoints/MedSAM2_latest.pt
+
+  # SAM-Med2D checkpoint.
+  # [RAMA_SAMMED2D_CKPT]
+  sammed2d_ckpt: /path/to/sam-med2d_b.pth
+
+# ----------------------------------------------------------------------------
+# LLM (Qwen-VL) meta-controller credentials and settings
+#
+# The released pipeline runs from CACHED Qwen outputs and never calls the API.
+# These settings are only needed if you re-run the live LLM scoring stage.
+# ----------------------------------------------------------------------------
+llm:
+  # OpenAI-compatible endpoint for Qwen-VL (e.g. DashScope compatible mode).
+  # [RAMA_LLM_BASE_URL]
+  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+
+  # API key. DO NOT hardcode here for a shared/committed config; prefer the
+  # environment variable RAMA_LLM_API_KEY.
+  # [RAMA_LLM_API_KEY]
+  api_key: ""
+
+  # Model name used for scoring. [RAMA_CACHE_MODEL]
+  model: qwen3-vl-plus
