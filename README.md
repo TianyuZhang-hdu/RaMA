@@ -11,6 +11,19 @@ SAM-Med2D) to produce consensus-refined pseudo-labels. An LLM-derived
 reliability score dynamically weights the self-training loss, suppressing
 noisy corrections from propagating.
 
+<p align="center">
+  <img src="RaMA.png" alt="RaMA framework" width="100%">
+</p>
+
+> **Figure**: Overview of the RaMA framework. The LLM acts as a cognitive
+> controller that inspects the source-model pseudo-label (top row) and emits
+> per-organ FP (false-positive) / FN (false-negative) point prompts. SAM 3,
+> MedSAM 2 and SAM-Med2D each take these prompts and produce a refined mask;
+> the three masks are then majority-voted to form the consensus pseudo-label
+> (bottom row). The LLM's per-organ confidence score and the inter-agent
+> agreement together yield a sample reliability weight that modulates the
+> self-training loss.
+
 
 ## Requirements
 
