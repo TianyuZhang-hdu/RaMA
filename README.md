@@ -147,12 +147,12 @@ done
 
 ## Results
 
-| Target | Source Only | LLM + Multi-SAM Direct | RaMA | Paper |
-|---|---:|---:|---:|---:|
-| Vendor B | 79.30 | 77.63 | **85.58** | 85.68 |
-| Vendor C | 68.58 | 67.79 | **82.85** | 82.13 |
-| Vendor D | 75.07 | 75.67 | **79.81** | 80.58 |
-| **Mean Dice** | 74.32 | 73.70 | **82.75** | 82.80 |
+| Target | Source Only | LLM + Multi-SAM Direct | RaMA |
+|---|---:|---:|---:|
+| Vendor B | 79.30 | 77.63 | **85.68** |
+| Vendor C | 68.58 | 67.79 | **82.13** |
+| Vendor D | 75.07 | 75.67 | **80.58** |
+| **Mean Dice** | 74.32 | 73.70 | **82.80** |
 
 See `docs/reproduction.md` for full per-class Dice / ASSD, standard deviations,
 and detailed training logs.

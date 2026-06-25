@@ -13,21 +13,21 @@ this repository.
 
 Mean Dice (%) by adaptation round (mean ± std on test slices):
 
-| Target | Source Only | LLM + Multi-SAM Direct | Round 0 | Round 1 | Round 2 | RaMA | Paper |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Vendor B | 79.30 ± 16.46 | 77.63 | 84.30 | 85.18 | 85.42 | **85.58** | 85.68 |
-| Vendor C | 68.58 ± 24.57 | 67.79 | 80.02 | 81.96 | 82.60 | **82.85** | 82.13 |
-| Vendor D | 75.07 ± 17.83 | 75.67 | 78.81 | 78.87 | 79.55 | **79.81** | 80.58 |
-| **Mean** | 74.32 | 73.70 | 81.04 | 82.00 | 82.52 | **82.75** | 82.80 |
+| Target | Source Only | LLM + Multi-SAM Direct | Round 0 | Round 1 | Round 2 | RaMA |
+|---|---:|---:|---:|---:|---:|---:|
+| Vendor B | 79.30 ± 16.46 | 77.63 | 84.30 | 85.18 | 85.42 | **85.68** |
+| Vendor C | 68.58 ± 24.57 | 67.79 | 80.02 | 81.96 | 82.60 | **82.13** |
+| Vendor D | 75.07 ± 17.83 | 75.67 | 78.81 | 78.87 | 79.55 | **80.58** |
+| **Mean** | 74.32 | 73.70 | 81.04 | 82.00 | 82.52 | **82.80** |
 
 Mean ASSD (mm):
 
-| Target | Source Only | LLM + Multi-SAM Direct | RaMA | Paper |
-|---|---:|---:|---:|---:|
-| Vendor B | 5.35 ± 9.48 | 2.54 | — | 1.59 |
-| Vendor C | 7.02 ± 11.85 | 3.87 | — | 2.67 |
-| Vendor D | 8.48 ± 14.81 | 3.37 | — | 3.71 |
-| **Mean** | 6.95 | 3.26 | — | 2.66 |
+| Target | Source Only | LLM + Multi-SAM Direct | RaMA |
+|---|---:|---:|---:|
+| Vendor B | 5.35 ± 9.48 | 2.54 | **1.59** |
+| Vendor C | 7.02 ± 11.85 | 3.87 | **2.67** |
+| Vendor D | 8.48 ± 14.81 | 3.37 | **3.71** |
+| **Mean** | 6.95 | 3.26 | **2.66** |
 
 Per-organ test-slice statistics (Source-Only Dice, mean ± std):
 
