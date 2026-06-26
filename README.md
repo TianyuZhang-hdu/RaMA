@@ -29,7 +29,7 @@ noisy corrections from propagating.
 python3 -m pip install -r requirements.txt
 ```
 
-Tested with: Python 3.10, PyTorch 2.0+, CUDA 11.8+, single NVIDIA RTX 3090.
+Tested with: Python 3.10, PyTorch 2.0+, CUDA 11.8+, single NVIDIA RTX 3090 / 5060 Ti.
 
 ### External model code
 
@@ -145,18 +145,15 @@ done
 
 ## Results
 
-The summary below follows Table 2 of the MICCAI 2026 paper. Values are average
-Dice (%) / average ASSD (mm) across LV, MYO, and RV.
+| Target | Source Only | LLM + Multi-SAM Direct | RaMA |
+|---|---:|---:|---:|
+| Vendor B | 79.95 | 77.88 | **85.68** |
+| Vendor C | 69.92 | 68.36 | **82.13** |
+| Vendor D | 75.39 | 75.76 | **80.58** |
+| **Mean Dice** | 75.09 | 74.00 | **82.80** |
 
-| Setting | Vendor B | Vendor C | Vendor D | Average |
-|---|---:|---:|---:|---:|
-| LLM + Multi-SAM Direct | 77.88 / 2.54 | 68.36 / 3.87 | 75.76 / 3.37 | 74.00 / 3.26 |
-| Source Only | 79.95 / 4.40 | 69.92 / 7.30 | 75.39 / 8.52 | 75.09 / 6.74 |
-| + Multi-Agent Refinement | 84.09 / 1.63 | 78.87 / 3.53 | 78.43 / 5.41 | 80.46 / 3.52 |
-| RaMA (+ Reliability Weighting) | **85.68 / 1.59** | **82.13 / 2.67** | **80.58 / 3.71** | **82.80 / 2.66** |
-
-See `docs/reproduction.md` for the paper-aligned per-class Dice / ASSD table,
-standard deviations, and component ablation.
+See `docs/reproduction.md` for full per-class Dice / ASSD, standard deviations,
+and detailed training logs.
 
 ## Citation
 

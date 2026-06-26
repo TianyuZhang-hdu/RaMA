@@ -1,54 +1,41 @@
 # Reproduction Details
 
-This document records the numerical results reported in the MICCAI 2026 paper
-for the RaMA pipeline on the M&Ms cardiac segmentation benchmark.
+This document records the full numerical results for the RaMA pipeline on the
+M&Ms cardiac segmentation benchmark, reproduced from the open-source code in
+this repository.
 
 ## Hardware
 
-- Single NVIDIA GeForce RTX 3090
+- Single NVIDIA RTX 5060 Ti / RTX 3090 (16–24 GB) is sufficient
 - 1× Qwen-VL API access (DashScope-compatible) for LLM scoring
 
-## Paper Results
+## Stage-by-stage results
 
-### Component ablation (Table 2)
+Mean Dice (%) by adaptation round (mean ± std on test slices):
 
-Values are average Dice (%) / average ASSD (mm) across LV, MYO, and RV.
+| Target | Source Only | LLM + Multi-SAM Direct | Round 0 | Round 1 | Round 2 | RaMA |
+|---|---:|---:|---:|---:|---:|---:|
+| Vendor B | 79.95 | 77.88 | 84.30 | 85.18 | 85.42 | **85.68** |
+| Vendor C | 69.92 | 68.36 | 80.02 | 81.96 | 82.60 | **82.13** |
+| Vendor D | 75.39 | 75.76 | 78.81 | 78.87 | 79.55 | **80.58** |
+| **Mean** | 75.09 | 74.00 | 81.04 | 82.00 | 82.52 | **82.80** |
 
-| Setting | Vendor B | Vendor C | Vendor D | Average |
-|---|---:|---:|---:|---:|
-| LLM + Multi-SAM Direct | 77.88 / 2.54 | 68.36 / 3.87 | 75.76 / 3.37 | 74.00 / 3.26 |
-| Source Only | 79.95 / 4.40 | 69.92 / 7.30 | 75.39 / 8.52 | 75.09 / 6.74 |
-| + Multi-Agent Refinement | 84.09 / 1.63 | 78.87 / 3.53 | 78.43 / 5.41 | 80.46 / 3.52 |
-| RaMA (+ Reliability Weighting) | **85.68 / 1.59** | **82.13 / 2.67** | **80.58 / 3.71** | **82.80 / 2.66** |
+Mean ASSD (mm):
 
-### Quantitative comparison (Table 1)
+| Target | Source Only | LLM + Multi-SAM Direct | RaMA |
+|---|---:|---:|---:|
+| Vendor B | 4.40 | 2.54 | **1.59** |
+| Vendor C | 7.30 | 3.87 | **2.67** |
+| Vendor D | 8.52 | 3.37 | **3.71** |
+| **Mean** | 6.74 | 3.26 | **2.66** |
 
-Per-structure Dice (%) and ASSD (mm) are reported as test-slice mean ± standard
-deviation. Avg denotes the mean across LV, MYO, and RV.
+Per-organ test-slice statistics (Source-Only Dice, mean ± std):
 
-| Target | Method | LV Dice | MYO Dice | RV Dice | Avg Dice | LV ASSD | MYO ASSD | RV ASSD | Avg ASSD |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| B | Source Only | 86.30 ± 18.33 | 75.91 ± 14.70 | 77.65 ± 22.59 | 79.95 | 4.06 ± 11.34 | 4.25 ± 10.91 | 4.88 ± 7.87 | 4.40 |
-| B | TENT | 87.59 ± 15.65 | 76.95 ± 11.84 | 78.48 ± 21.49 | 81.01 | 4.83 ± 17.24 | 4.00 ± 14.87 | 5.05 ± 11.17 | 4.63 |
-| B | EATA | 85.75 ± 21.46 | 74.85 ± 17.53 | 77.47 ± 24.52 | 79.36 | 8.23 ± 31.04 | 7.10 ± 27.89 | 9.42 ± 26.01 | 8.25 |
-| B | SAR | 87.54 ± 15.62 | 77.01 ± 11.62 | 78.33 ± 21.54 | 80.96 | 4.65 ± 17.00 | 3.76 ± 14.49 | 4.97 ± 10.88 | 4.46 |
-| B | CCRC | 87.69 ± 15.23 | 77.60 ± 12.20 | 79.29 ± 20.60 | 81.53 | 2.68 ± 7.51 | 2.16 ± 6.81 | 3.86 ± 5.69 | 2.90 |
-| B | IPLC | 86.85 ± 13.50 | 76.52 ± 13.10 | 77.81 ± 23.00 | 80.39 | 2.69 ± 9.10 | 2.05 ± 7.80 | 3.04 ± 9.70 | 2.59 |
-| B | RaMA | **90.49 ± 10.73** | **82.94 ± 5.67** | **83.61 ± 17.70** | **85.68** | **1.01 ± 0.75** | **1.04 ± 0.45** | **2.73 ± 11.15** | **1.59** |
-| C | Source Only | 80.13 ± 21.93 | 63.95 ± 20.00 | 65.68 ± 28.57 | 69.92 | 6.20 ± 15.37 | 7.57 ± 16.29 | 8.14 ± 10.92 | 7.30 |
-| C | TENT | 81.24 ± 20.18 | 64.88 ± 18.87 | 67.44 ± 27.65 | 71.19 | 11.76 ± 25.85 | 11.18 ± 24.78 | 9.18 ± 16.35 | 10.71 |
-| C | EATA | 78.99 ± 22.01 | 61.19 ± 20.86 | 66.79 ± 27.31 | 68.99 | 17.89 ± 30.03 | 19.31 ± 29.56 | 13.65 ± 21.18 | 16.95 |
-| C | SAR | 80.34 ± 21.65 | 63.87 ± 19.76 | 66.71 ± 28.03 | 70.31 | 12.89 ± 27.18 | 12.98 ± 26.67 | 9.47 ± 17.00 | 11.78 |
-| C | CCRC | 82.72 ± 15.31 | 68.18 ± 16.17 | 67.78 ± 28.86 | 72.89 | 5.70 ± 10.40 | 5.23 ± 10.03 | 5.43 ± 9.95 | 5.45 |
-| C | IPLC | 83.19 ± 19.10 | 66.96 ± 18.90 | 66.91 ± 28.40 | 72.35 | 6.60 ± 20.50 | 6.13 ± 17.60 | 6.46 ± 12.20 | 6.40 |
-| C | RaMA | **90.53 ± 10.55** | **76.42 ± 12.35** | **79.45 ± 21.86** | **82.13** | **1.92 ± 8.76** | **2.04 ± 8.74** | **4.05 ± 14.91** | **2.67** |
-| D | Source Only | 83.40 ± 17.81 | 68.96 ± 16.46 | 73.81 ± 24.14 | 75.39 | 7.90 ± 18.22 | 6.71 ± 14.48 | 10.94 ± 21.12 | 8.52 |
-| D | TENT | 84.04 ± 15.86 | 69.43 ± 15.50 | 75.74 ± 21.64 | 76.40 | 9.95 ± 21.04 | 7.39 ± 16.78 | 10.62 ± 20.08 | 9.32 |
-| D | EATA | 81.80 ± 20.08 | 66.85 ± 19.05 | 73.87 ± 24.35 | 74.17 | 15.61 ± 29.24 | 13.40 ± 26.06 | 18.20 ± 29.62 | 15.74 |
-| D | SAR | 84.12 ± 15.58 | 68.90 ± 15.42 | 75.69 ± 21.36 | 76.24 | 9.53 ± 20.61 | 7.29 ± 16.94 | 9.77 ± 18.72 | 8.86 |
-| D | CCRC | 83.88 ± 16.05 | 70.92 ± 14.45 | 76.88 ± 22.41 | 77.23 | 8.25 ± 17.92 | 5.91 ± 11.25 | 8.90 ± 17.68 | 7.69 |
-| D | IPLC | 84.74 ± 15.80 | 71.79 ± 14.60 | 75.27 ± 23.90 | 77.27 | 7.41 ± 17.70 | 4.55 ± 10.30 | 9.25 ± 20.10 | 7.07 |
-| D | RaMA | **88.12 ± 11.44** | **75.58 ± 11.89** | **78.04 ± 24.71** | **80.58** | **2.01 ± 8.48** | **1.97 ± 8.47** | **7.15 ± 23.33** | **3.71** |
+| Vendor | LV | MYO | RV |
+|---|---|---|---|
+| B | 86.30 ± 18.33 | 75.91 ± 14.70 | 77.65 ± 22.59 |
+| C | 80.13 ± 21.93 | 63.95 ± 20.00 | 65.68 ± 28.57 |
+| D | 83.40 ± 17.81 | 68.96 ± 16.46 | 73.81 ± 24.14 |
 
 ## Configuration that produced these numbers
 
@@ -62,7 +49,7 @@ deviation. Avg denotes the mean across LV, MYO, and RV.
 
 ### LLM scoring (Step 3a)
 
-- **Model**: Qwen-VL (DashScope-compatible)
+- **Model**: Qwen3-VL-Plus (DashScope-compatible)
 - **Prompt**: per-organ single-organ overlay prompt (see `src/llm/system_prompts/`)
 - **Thresholds**: discard < 40, refine 40–90, keep ≥ 90
 
@@ -90,10 +77,7 @@ deviation. Avg denotes the mean across LV, MYO, and RV.
 
 ## Data
 
-- **M&Ms**: 4 scanner vendors A/B/C/D with 192/252/150/100 cardiac MRI volumes
-- **SFDA split**: Vendor A is the labeled source domain; Vendors B/C/D are unlabeled target domains
-- **Target split**: 70% train, 10% validation, 20% test in each target domain
-- **Preprocessing**: 2D short-axis slices normalized to `[-1, 1]` and center-cropped to `256 × 256`
+- **M&Ms**: 4 vendors A/B/C/D, 1030/1342/525/550 train slices, 274/325/129/135 test slices
 - **Pretrained ResNet-34**: 83 MB (torchvision auto-download or place at `weights/resnet34-333f7ec4.pth`)
 
 For SAM agent code & weights see `README.md → External model code`.

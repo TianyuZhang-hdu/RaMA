@@ -38,7 +38,7 @@ LLM_PROVIDER = os.getenv("RAMA_LLM_PROVIDER", "openai")
 DEFAULT_TAU_LOW = int(os.getenv("RAMA_TAU_LOW", "40"))
 DEFAULT_TAU_HIGH = int(os.getenv("RAMA_TAU_HIGH", "90"))
 
-# Enable optional LLM deep-thinking (long reasoning) mode. Disable for batch scoring
+# Enable Qwen3-VL deep-thinking (long reasoning) mode. Disable for batch scoring
 # with multiprocessing to avoid hangs.
 ENABLE_THINKING = os.getenv("RAMA_ENABLE_THINKING", "false").lower() == "true"
 

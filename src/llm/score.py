@@ -78,7 +78,7 @@ DEBUG_DIR = f"{_WS}/asga/tests/debug_output_llm/{MODEL_NAME}/{VENDOR}_{SPLIT}"
 
 # 生成范围控制
 START_INDEX = 0     # 从第1张开始
-END_INDEX = 1400    # 覆盖完整 vendor split 的安全上限
+END_INDEX = 1400    # 覆盖全部图片（vendorB 共1342张）
 
 
 def score_single_organ(original_img: Image.Image, overlay_img: Image.Image, organ_key: str, prompt_template: str) -> dict:
@@ -372,3 +372,4 @@ def run_llm_scoring(save_detail: bool = True, num_workers: int = NUM_WORKERS):
 
 if __name__ == "__main__":
     run_llm_scoring(save_detail=False, num_workers=NUM_WORKERS)
+
