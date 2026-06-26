@@ -15,14 +15,12 @@ noisy corrections from propagating.
   <img src="RaMA.png" alt="RaMA framework" width="100%">
 </p>
 
-> **Figure**: Overview of the RaMA framework. The LLM acts as a cognitive
-> controller that inspects the source-model pseudo-label (top row) and emits
-> per-organ FP (false-positive) / FN (false-negative) point prompts. SAM 3,
-> MedSAM 2 and SAM-Med2D each take these prompts and produce a refined mask;
-> the three masks are then majority-voted to form the consensus pseudo-label
-> (bottom row). The LLM's per-organ confidence score and the inter-agent
-> agreement together yield a sample reliability weight that modulates the
-> self-training loss.
+> **Figure**: Overview of the RaMA framework. The source model initializes the
+> target model and produces pseudo labels on unlabeled target images. A
+> multimodal LLM converts pseudo-label errors into spatial constraints and a
+> reliability score, which guide heterogeneous SAM agents to generate refined
+> labels. The refined labels and reliability weight jointly supervise
+> reliability-aware target-domain adaptation.
 
 
 ## Requirements
